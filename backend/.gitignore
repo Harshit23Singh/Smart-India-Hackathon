@@ -1,0 +1,30 @@
+# Python virtual environment
+.venv/
+venv/
+ENV/
+env/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# Environment variables
+.env
+
+# Uploads directory (ignore temporary uploaded audio, keep .gitkeep)
+uploads/*
+!uploads/.gitkeep
+
+# Models directory (ignore large ONNX models ~1.26GB, keep .gitkeep)
+models/*.onnx
+!models/.gitkeep
+
+# Testing and IDE artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+.vscode/
+.idea/
+*.log
