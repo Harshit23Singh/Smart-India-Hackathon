@@ -6,7 +6,8 @@ import DetectionResult from "@/components/analysis/DetectionResult";
 import ExplainableAI from "@/components/analysis/ExplainableAI";
 import SpeakerVerification from "@/components/analysis/SpeakerVerification";
 import ThreatMeter from "@/components/analysis/ThreatMeter";
-import { Mic, Square, Play, ShieldAlert } from "lucide-react";
+import StarBorder from "@/components/ui/StarBorder";
+import { Mic, Square, Play, ShieldAlert, Sparkles, AlertTriangle } from "lucide-react";
 
 export default function LiveDetectionPage() {
   const [demoState, setDemoState] = useState<"idle" | "recording" | "analyzing" | "result_threat">("idle");
@@ -21,76 +22,105 @@ export default function LiveDetectionPage() {
     setDemoState("idle");
   };
 
+  const isLive = demoState === "recording";
+
   return (
     <div className="max-w-6xl mx-auto space-y-6 pb-20">
       
-      <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-2 border-b border-white/5">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Live Voice Detection</h1>
-          <p className="text-foreground/60 mt-1">Analyze incoming audio streams in real time.</p>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent text-xs font-mono font-bold mb-2">
+            <Sparkles size={12} className="animate-spin" /> LIVE STREAM FORENSICS
+          </div>
+          <h1 className="text-3xl font-extrabold text-white">Live Voice Detection</h1>
+          <p className="text-white/60 text-sm mt-1">Real-time spectral analysis & neural voice cloning prevention.</p>
         </div>
         
-        {/* Demo Controls */}
-        <div className="flex gap-2">
+        {/* Controls */}
+        <div className="flex gap-3">
           {demoState === "idle" && (
-            <button onClick={startDemo} className="px-4 py-2 bg-accent hover:bg-accent/90 text-white rounded-lg flex items-center gap-2 transition-colors font-medium">
-              <Play size={18} />
+            <button 
+              onClick={startDemo} 
+              className="px-5 py-2.5 bg-accent hover:bg-cyan-300 text-black font-bold rounded-xl flex items-center gap-2 transition-all shadow-[0_0_20px_rgba(0,229,255,0.4)] cursor-pointer"
+            >
+              <Play size={16} className="fill-current" />
               Start Live Analysis
             </button>
           )}
           {demoState !== "idle" && (
-            <button onClick={resetDemo} className="px-4 py-2 skeuo-button text-foreground rounded-lg flex items-center gap-2 transition-colors font-medium cursor-pointer">
-              <Square size={18} />
-              Reset
+            <button 
+              onClick={resetDemo} 
+              className="px-5 py-2.5 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl flex items-center gap-2 transition-all border border-white/10 cursor-pointer"
+            >
+              <Square size={16} />
+              Reset Demo
             </button>
           )}
         </div>
       </div>
 
-      {/* Main Recording/Analysis Stage */}
-      <div className="skeuo-card p-8 min-h-[300px] flex flex-col items-center justify-center relative overflow-hidden border-2 border-accent/20">
-        
-        {demoState === "recording" && (
-          <div className="absolute top-6 left-6 px-3 py-1 bg-success/20 border border-success/30 rounded-full flex items-center gap-2">
-            <div className="h-2 w-2 rounded-full bg-success animate-ping"></div>
-            <span className="text-xs font-bold text-success uppercase tracking-widest">LIVE RECORDING</span>
+      {/* Main Recording / Visualizer Stage Card */}
+      <StarBorder
+        as="div"
+        className="w-full"
+        innerClassName="p-8 min-h-[320px] flex flex-col items-center justify-center relative overflow-hidden bg-[#07070a]/95"
+        color={isLive ? "#ef4444" : demoState === "analyzing" ? "#f59e0b" : demoState === "result_threat" ? "#ef4444" : "#00e5ff"}
+        speed="4s"
+        thickness={2}
+        backgroundColor="#07070a"
+        borderColor="rgba(255, 255, 255, 0.08)"
+      >
+        {isLive && (
+          <div className="absolute top-6 left-6 px-3 py-1 bg-red-500/10 border border-red-500/30 rounded-full flex items-center gap-2 shadow-[0_0_15px_rgba(239,68,68,0.2)]">
+            <div className="h-2 w-2 rounded-full bg-red-500 animate-ping"></div>
+            <span className="text-[10px] font-bold text-red-400 font-mono tracking-widest uppercase">STREAMING ACTIVE</span>
           </div>
         )}
-        
-        {/* Large Waveform Visualizer */}
-        <div className="w-full h-40 flex items-center justify-center gap-1.5 md:gap-2">
-          {[...Array(60)].map((_, i) => {
+
+        {/* Waveform Visualizer */}
+        <div className="w-full h-44 flex items-center justify-center gap-1.5 md:gap-2">
+          {[...Array(50)].map((_, i) => {
             const isActive = demoState === "recording" || demoState === "analyzing";
             const height = isActive 
-              ? Math.max(10, Math.random() * 100) 
-              : 5;
+              ? Math.max(15, Math.random() * 95) 
+              : 8;
             
             return (
               <div 
                 key={i}
-                className="w-1.5 md:w-2 bg-accent/80 rounded-full transition-all duration-300"
+                className={`w-1.5 md:w-2 rounded-full transition-all duration-200 ${
+                  demoState === "recording" 
+                    ? "bg-red-500 shadow-[0_0_8px_#ef4444]" 
+                    : demoState === "analyzing" 
+                    ? "bg-amber-400 shadow-[0_0_8px_#f59e0b]" 
+                    : demoState === "result_threat" 
+                    ? "bg-red-500" 
+                    : "bg-white/10"
+                }`}
                 style={{
                   height: `${height}%`,
-                  opacity: isActive ? (0.5 + Math.random() * 0.5) : 0.3,
-                  boxShadow: isActive ? '0 0 10px rgba(59, 130, 246, 0.5)' : 'none'
+                  opacity: isActive ? (0.6 + Math.random() * 0.4) : 0.2,
                 }}
               ></div>
-            )
+            );
           })}
         </div>
 
         {demoState === "idle" && (
-          <div className="mt-8 text-center text-foreground/60 flex flex-col items-center">
-            <Mic size={32} className="mb-4 text-foreground/40" />
-            <p className="text-lg">Ready to Analyze</p>
-            <p className="text-sm">Click "Start Live Analysis" to begin detecting threats.</p>
+          <div className="mt-4 text-center text-white/50 flex flex-col items-center">
+            <div className="p-3 rounded-2xl bg-white/5 border border-white/10 mb-3 text-white/40">
+              <Mic size={28} />
+            </div>
+            <p className="text-base font-bold text-white">System Ready for Live Telemetry</p>
+            <p className="text-xs text-white/40 mt-0.5">Click &quot;Start Live Analysis&quot; above to begin detecting voice spoofing threats.</p>
           </div>
         )}
-      </div>
+      </StarBorder>
 
-      {/* Analysis Flow - Appears conditionally based on state */}
+      {/* Analysis Flow */}
       {demoState !== "idle" && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom-8 duration-700">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           
           <div className="lg:col-span-1 space-y-6">
             <AnalysisPipeline 
@@ -104,26 +134,24 @@ export default function LiveDetectionPage() {
             />
             
             {demoState === "result_threat" && (
-              <div className="animate-in fade-in zoom-in duration-500 delay-300">
-                <ThreatMeter 
-                  status="threat"
-                  authenticity={18}
-                  syntheticProb={94}
-                  speakerMatch={21}
-                />
-              </div>
+              <ThreatMeter 
+                status="threat"
+                authenticity={18}
+                syntheticProb={94}
+                speakerMatch={21}
+              />
             )}
           </div>
 
           <div className="lg:col-span-2 space-y-6">
             {demoState === "result_threat" ? (
-              <div className="animate-in fade-in slide-in-from-right-8 duration-500">
+              <div className="space-y-6">
                 <DetectionResult 
                   status="threat"
                   confidence={94}
                 />
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <SpeakerVerification 
                     expectedSpeaker="Harshit Singh"
                     analyzedVoice="Unknown Source"
@@ -139,44 +167,57 @@ export default function LiveDetectionPage() {
                   />
                 </div>
                 
-                {/* Prevention/Response Panel */}
-                <div className="mt-6 skeuo-card border-l-4 border-l-danger p-6 bg-danger/5">
-                  <div className="flex items-center gap-3 mb-4">
-                    <ShieldAlert className="text-danger" size={24} />
-                    <h3 className="text-lg font-bold text-danger">Threat Response Action Required</h3>
+                {/* Prevention / Response Panel */}
+                <StarBorder
+                  as="div"
+                  className="w-full"
+                  innerClassName="p-6 bg-[#07070a]/95"
+                  color="#ef4444"
+                  speed="4s"
+                  thickness={1.5}
+                  backgroundColor="#07070a"
+                  borderColor="rgba(239, 68, 68, 0.3)"
+                >
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="p-2 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400">
+                      <ShieldAlert size={22} />
+                    </div>
+                    <div>
+                      <h3 className="text-base font-bold text-red-400">Threat Mitigation Action Required</h3>
+                      <p className="text-xs text-white/50">Active impersonation detected on stream channel.</p>
+                    </div>
                   </div>
-                  <p className="text-foreground/80 mb-4">Potential impersonation detected. Immediate action is recommended.</p>
                   
-                  <ul className="space-y-2 mb-6">
-                    <li className="flex items-center gap-2 text-sm text-foreground/70">
-                      <span className="text-danger">✓</span> Pause or end the conversation immediately
+                  <ul className="space-y-2 mb-6 bg-[#020204] p-4 rounded-xl border border-white/5">
+                    <li className="flex items-center gap-2 text-xs text-white/80">
+                      <span className="text-red-400 font-bold">✓</span> Terminate incoming connection or mute audio feed immediately
                     </li>
-                    <li className="flex items-center gap-2 text-sm text-foreground/70">
-                      <span className="text-danger">✓</span> Verify identity through an alternative communication channel
+                    <li className="flex items-center gap-2 text-xs text-white/80">
+                      <span className="text-red-400 font-bold">✓</span> Request out-of-band verification code
                     </li>
-                    <li className="flex items-center gap-2 text-sm text-foreground/70">
-                      <span className="text-danger">✓</span> Ask a predefined challenge question
+                    <li className="flex items-center gap-2 text-xs text-white/80">
+                      <span className="text-red-400 font-bold">✓</span> Issue challenge question to verify caller authenticity
                     </li>
                   </ul>
                   
-                  <div className="flex flex-wrap gap-4">
-                    <button className="px-5 py-2.5 bg-danger hover:bg-danger/90 text-white font-medium rounded-lg transition-colors">
-                      Block Caller
+                  <div className="flex flex-wrap gap-3">
+                    <button className="px-5 py-2.5 bg-red-600 hover:bg-red-500 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-[0_0_15px_rgba(239,68,68,0.4)] cursor-pointer">
+                      Block Stream
                     </button>
-                    <button className="px-5 py-2.5 skeuo-button text-foreground font-medium rounded-lg transition-colors cursor-pointer">
+                    <button className="px-5 py-2.5 bg-white/10 hover:bg-white/15 text-white font-semibold text-xs rounded-xl transition-all border border-white/10 cursor-pointer">
                       Verify Identity
                     </button>
-                    <button className="px-5 py-2.5 skeuo-button text-foreground font-medium rounded-lg transition-colors cursor-pointer">
-                      Report Threat
+                    <button className="px-5 py-2.5 bg-white/10 hover:bg-white/15 text-white font-semibold text-xs rounded-xl transition-all border border-white/10 cursor-pointer">
+                      Report Incident
                     </button>
                   </div>
-                </div>
+                </StarBorder>
               </div>
             ) : (
-              <div className="h-full w-full skeuo-card flex items-center justify-center p-12 text-center text-foreground/40 border-dashed">
+              <div className="h-full min-h-[300px] rounded-2xl border border-dashed border-white/10 bg-[#07070a]/50 flex items-center justify-center p-12 text-center text-white/40">
                 {demoState === "analyzing" 
-                  ? "AI models are analyzing the audio stream..." 
-                  : "Waiting for audio input to generate detailed analysis."}
+                  ? "AI models are decomposing acoustic features in real time..." 
+                  : "Waiting for live audio capture stream..."}
               </div>
             )}
           </div>
@@ -186,4 +227,3 @@ export default function LiveDetectionPage() {
     </div>
   );
 }
-

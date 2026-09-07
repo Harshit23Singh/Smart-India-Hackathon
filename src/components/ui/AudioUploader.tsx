@@ -2,6 +2,7 @@
 
 import { UploadCloud } from "lucide-react";
 import { useState, useRef } from "react";
+import StarBorder from "@/components/ui/StarBorder";
 
 interface AudioUploaderProps {
   onFileSelect?: (file: File) => void;
@@ -17,7 +18,6 @@ export default function AudioUploader({ onFileSelect, disabled }: AudioUploaderP
     if (file && onFileSelect) {
       onFileSelect(file);
     }
-    // Reset input so the same file can be selected again if needed
     if (e.target) {
       e.target.value = "";
     }
@@ -35,18 +35,25 @@ export default function AudioUploader({ onFileSelect, disabled }: AudioUploaderP
   };
 
   return (
-    <div className="skeuo-card p-6 flex flex-col h-full relative overflow-hidden">
-      {/* Top highlight line */}
-      <div className="absolute top-0 left-4 right-4 h-px bg-gradient-to-r from-transparent via-foreground/10 to-transparent rounded-full"></div>
-
-      <div className="flex items-center gap-3 mb-4">
-        <div className="skeuo-inset p-2 rounded-lg text-foreground/70">
-          <UploadCloud size={24} />
+    <StarBorder
+      as="div"
+      className="w-full h-full"
+      innerClassName="p-6 flex flex-col h-full bg-[#07070a]/95"
+      color="#a855f7"
+      speed="6s"
+      thickness={1.5}
+      backgroundColor="#07070a"
+      borderColor="rgba(255, 255, 255, 0.08)"
+    >
+      <div className="flex items-center gap-3 mb-2">
+        <div className="p-2 rounded-lg bg-purple-500/10 border border-purple-500/30 text-purple-400">
+          <UploadCloud size={20} />
         </div>
-        <h3 className="text-lg font-semibold text-foreground">Upload Audio File</h3>
+        <div>
+          <h3 className="text-lg font-bold text-white">Upload Audio Sample</h3>
+          <p className="text-xs text-white/50">Supports bulk scan & deep acoustic forensics</p>
+        </div>
       </div>
-
-      <p className="text-sm text-foreground/60 mb-4">Drag and drop an audio file here, or click to browse</p>
 
       {/* Hidden file input */}
       <input 
@@ -58,11 +65,13 @@ export default function AudioUploader({ onFileSelect, disabled }: AudioUploaderP
         disabled={disabled}
       />
 
-      {/* Drop zone — sunken inset panel */}
+      {/* Drop zone */}
       <div
-        className={`skeuo-inset flex-1 rounded-xl flex flex-col items-center justify-center p-6 transition-all duration-200 
-          ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
-          ${isDragging && !disabled ? "ring-2 ring-accent ring-inset" : ""}
+        className={`mt-3 flex-1 rounded-2xl border-2 border-dashed flex flex-col items-center justify-center p-6 transition-all duration-200 
+          ${disabled ? "opacity-50 cursor-not-allowed bg-black/40 border-white/5" : "cursor-pointer"}
+          ${isDragging && !disabled 
+            ? "border-purple-400 bg-purple-500/10 shadow-[0_0_25px_rgba(168,85,247,0.2)]" 
+            : "border-white/10 bg-[#020204] hover:border-purple-500/50 hover:bg-white/[0.02]"}
         `}
         onDragOver={(e) => { e.preventDefault(); if (!disabled) setIsDragging(true); }}
         onDragLeave={() => setIsDragging(false)}
@@ -70,18 +79,18 @@ export default function AudioUploader({ onFileSelect, disabled }: AudioUploaderP
         onClick={() => !disabled && fileInputRef.current?.click()}
       >
         {/* Upload icon button */}
-        <div className="h-20 w-20 rounded-full skeuo-button flex items-center justify-center mb-5 text-accent">
-          <UploadCloud size={36} />
+        <div className="h-16 w-16 rounded-2xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center mb-4 text-purple-400 shadow-[0_0_15px_rgba(168,85,247,0.2)] transition-transform hover:scale-105">
+          <UploadCloud size={30} />
         </div>
 
-        <p className="text-base font-semibold text-foreground mb-1">Drop audio file here</p>
-        <p className="text-sm text-foreground/50">or click to browse</p>
+        <p className="text-sm font-bold text-white mb-1">Drag & drop your audio file here</p>
+        <p className="text-xs text-white/40">or click to browse from system</p>
 
-        <div className="mt-6 skeuo-inset rounded-lg px-6 py-3 flex flex-col items-center gap-1">
-          <p className="text-xs text-foreground/50">Supports MP3 • WAV • M4A • FLAC</p>
-          <p className="text-xs text-foreground/40">Maximum size: 25 MB</p>
+        <div className="mt-5 rounded-xl bg-black/80 border border-white/10 px-5 py-2.5 flex flex-col items-center gap-0.5">
+          <p className="text-[11px] font-mono text-purple-300">WAV • MP3 • M4A • FLAC • OGG</p>
+          <p className="text-[10px] text-white/40">Maximum upload size: 25 MB</p>
         </div>
       </div>
-    </div>
+    </StarBorder>
   );
 }

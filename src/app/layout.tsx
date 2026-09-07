@@ -23,19 +23,8 @@ export const metadata: Metadata = {
 const themeInitScript = `
   (function() {
     try {
-      var stored = localStorage.getItem('theme');
-      if (stored === 'light') {
-        document.documentElement.classList.remove('dark');
-        document.documentElement.style.colorScheme = 'light';
-      } else if (stored === 'system') {
-        var isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        document.documentElement.classList.toggle('dark', isDark);
-        document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
-      } else {
-        // Default to dark mode
-        document.documentElement.classList.add('dark');
-        document.documentElement.style.colorScheme = 'dark';
-      }
+      document.documentElement.classList.add('dark');
+      document.documentElement.style.colorScheme = 'dark';
     } catch (e) {}
   })();
 `;
@@ -54,15 +43,19 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
-      <body className="h-full bg-background text-foreground flex overflow-hidden transition-colors duration-200">
+      <body className="h-full bg-black text-foreground flex overflow-hidden selection:bg-accent/30 selection:text-accent">
         <ThemeProvider>
           {/* Sidebar */}
           <Sidebar />
           
           {/* Main Content Area */}
-          <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+          <div className="flex-1 flex flex-col min-w-0 overflow-hidden bg-black/90 relative">
+            {/* Ambient cyber light orb */}
+            <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[140px] pointer-events-none -z-10" />
+            <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-purple-600/5 rounded-full blur-[140px] pointer-events-none -z-10" />
+
             <TopNav />
-            <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
+            <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 relative z-0">
               {children}
             </main>
           </div>

@@ -1,7 +1,8 @@
 "use client";
 
-import { ShieldAlert, AlertTriangle, ShieldCheck, CheckCircle2 } from "lucide-react";
+import { ShieldAlert, AlertTriangle, ShieldCheck, Bell, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
+import StarBorder from "@/components/ui/StarBorder";
 
 const alerts = [
   { id: 1, severity: "critical", type: "CEO Impersonation Attempt", time: "2 minutes ago", source: "External Call (+1 555-0198)", status: "Blocked" },
@@ -13,21 +14,24 @@ const alerts = [
 
 export default function AlertsPage() {
   return (
-    <div className="max-w-5xl mx-auto space-y-6">
+    <div className="max-w-5xl mx-auto space-y-6 pb-16">
       
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-2 border-b border-white/5">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Threat Alerts</h1>
-          <p className="text-foreground/60 mt-1">Real-time notifications of security events.</p>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent text-xs font-mono font-bold mb-2">
+            <Bell size={12} /> REAL-TIME SECURITY ALERTS
+          </div>
+          <h1 className="text-3xl font-extrabold text-white">Threat Alerts</h1>
+          <p className="text-white/60 text-sm mt-1">Live telemetry notifications & flagged biometric events.</p>
         </div>
         
         <div className="flex gap-2">
-          <select className="skeuo-inset border border-border rounded-lg px-3 py-2 text-sm text-foreground focus:outline-none">
+          <select className="bg-black/60 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-accent">
             <option>All Alerts</option>
             <option>Critical Only</option>
             <option>Unresolved</option>
           </select>
-          <button className="px-4 py-2 skeuo-button rounded-lg text-sm transition-colors cursor-pointer">
+          <button className="px-4 py-2 bg-white/10 hover:bg-white/15 border border-white/10 rounded-xl text-xs font-semibold text-white transition-colors cursor-pointer">
             Mark All as Read
           </button>
         </div>
@@ -38,63 +42,64 @@ export default function AlertsPage() {
           const isCritical = alert.severity === "critical";
           const isHigh = alert.severity === "high";
           const isMedium = alert.severity === "medium";
-          const isResolved = alert.severity === "resolved";
+
+          const starColor = isCritical ? "#ef4444" : isHigh ? "#f87171" : isMedium ? "#f59e0b" : "#10b981";
 
           return (
-            <div 
-              key={alert.id} 
-              className={cn(
-                "skeuo-card p-5 flex flex-col md:flex-row gap-4 items-start md:items-center justify-between transition-all hover:-translate-y-1",
-                isCritical ? "border-danger bg-danger/5" :
-                isHigh ? "border-danger/50" :
-                isMedium ? "border-warning/50" :
-                "border-success/30 opacity-70"
-              )}
+            <StarBorder
+              key={alert.id}
+              as="div"
+              className="w-full transition-all duration-200 hover:-translate-y-0.5"
+              innerClassName="p-5 flex flex-col md:flex-row gap-4 items-start md:items-center justify-between bg-[#07070a]/95"
+              color={starColor}
+              speed="8s"
+              thickness={1.5}
+              backgroundColor="#07070a"
+              borderColor="rgba(255, 255, 255, 0.08)"
             >
               <div className="flex items-start gap-4">
                 <div className={cn(
-                  "p-3 rounded-full shrink-0",
-                  isCritical || isHigh ? "bg-danger/20 text-danger" :
-                  isMedium ? "bg-warning/20 text-warning" :
-                  "bg-success/20 text-success"
+                  "p-3 rounded-xl border shrink-0",
+                  isCritical || isHigh ? "bg-red-500/10 border-red-500/30 text-red-400" :
+                  isMedium ? "bg-amber-500/10 border-amber-500/30 text-amber-400" :
+                  "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"
                 )}>
-                  {isCritical || isHigh ? <ShieldAlert size={24} /> :
-                   isMedium ? <AlertTriangle size={24} /> :
-                   <ShieldCheck size={24} />}
+                  {isCritical || isHigh ? <ShieldAlert size={22} /> :
+                   isMedium ? <AlertTriangle size={22} /> :
+                   <ShieldCheck size={22} />}
                 </div>
                 
                 <div>
                   <div className="flex items-center gap-3 mb-1">
-                    <h3 className="text-base font-bold text-foreground">{alert.type}</h3>
+                    <h3 className="text-sm font-bold text-white">{alert.type}</h3>
                     <span className={cn(
-                      "text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded",
-                      isCritical ? "bg-danger text-white" :
-                      isHigh ? "bg-danger/20 text-danger" :
-                      isMedium ? "bg-warning/20 text-warning" :
-                      "bg-success/20 text-success"
+                      "text-[10px] uppercase font-mono font-bold tracking-widest px-2 py-0.5 rounded border",
+                      isCritical ? "bg-red-500 text-white border-red-600" :
+                      isHigh ? "bg-red-500/10 text-red-400 border-red-500/30" :
+                      isMedium ? "bg-amber-500/10 text-amber-400 border-amber-500/30" :
+                      "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
                     )}>
                       {alert.severity}
                     </span>
                   </div>
-                  <p className="text-sm text-foreground/70">{alert.source}</p>
+                  <p className="text-xs text-white/50">{alert.source}</p>
                 </div>
               </div>
               
-              <div className="flex items-center gap-6 w-full md:w-auto justify-between md:justify-end border-t md:border-t-0 border-border/50 pt-3 md:pt-0 mt-2 md:mt-0">
+              <div className="flex items-center gap-5 w-full md:w-auto justify-between md:justify-end border-t md:border-t-0 border-white/5 pt-3 md:pt-0 mt-2 md:mt-0">
                 <div className="text-right">
-                  <p className="text-sm font-medium text-foreground">{alert.status}</p>
-                  <p className="text-xs text-foreground/50">{alert.time}</p>
+                  <p className="text-xs font-semibold text-white">{alert.status}</p>
+                  <p className="text-[10px] text-white/40">{alert.time}</p>
                 </div>
-                <button className="px-4 py-2 skeuo-button text-sm font-medium rounded-lg transition-colors cursor-pointer">
+                <button className="px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-white rounded-xl transition-colors cursor-pointer">
                   Details
                 </button>
               </div>
-            </div>
-          )
+            </StarBorder>
+          );
         })}
       </div>
 
     </div>
   );
 }
-

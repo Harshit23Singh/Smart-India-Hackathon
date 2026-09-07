@@ -3,91 +3,85 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  /* Light mode palette (clean, tactile, modern matte console) */
-  --background: #edf1f7;
-  --foreground: #1c222b;
+  /* Pitch Black Cyber/Obsidian Theme */
+  --background: #000000;
+  --foreground: #f1f5f9;
   
-  /* Skeuomorphic surfaces */
-  --panel-bg: #ffffff;
-  --panel-highlight: rgba(255, 255, 255, 0.95);
-  --panel-shadow-dark: rgba(160, 175, 200, 0.45);
-  --panel-shadow-light: rgba(255, 255, 255, 0.9);
-  --card-border: rgba(0, 0, 0, 0.08);
+  /* Obsidian glass surfaces */
+  --panel-bg: #07070a;
+  --panel-highlight: rgba(255, 255, 255, 0.06);
+  --panel-shadow-dark: rgba(0, 0, 0, 0.95);
+  --panel-shadow-light: rgba(255, 255, 255, 0.03);
+  --card-border: rgba(255, 255, 255, 0.08);
   
-  /* Inset areas (screens, sunken panels) */
-  --inset-bg: #e5ebf4;
-  --inset-shadow-dark: rgba(160, 175, 200, 0.55);
-  --inset-shadow-light: rgba(255, 255, 255, 0.95);
-  --inset-border: rgba(0, 0, 0, 0.08);
+  /* Inset areas (sunken cockpits, waveforms, dials) */
+  --inset-bg: #030305;
+  --inset-shadow-dark: rgba(0, 0, 0, 0.98);
+  --inset-shadow-light: rgba(255, 255, 255, 0.02);
+  --inset-border: rgba(255, 255, 255, 0.06);
 
-  /* Button surfaces */
-  --btn-bg-start: #ffffff;
-  --btn-bg-end: #e8edf5;
-  --btn-hover-start: #ffffff;
-  --btn-hover-end: #dfe6f0;
-  --btn-border: rgba(0, 0, 0, 0.12);
-  --btn-shadow-light: rgba(255, 255, 255, 0.9);
-  --btn-shadow-dark: rgba(160, 175, 200, 0.45);
+  /* Button surfaces (tactile dark glass) */
+  --btn-bg-start: #12131a;
+  --btn-bg-end: #090a0f;
+  --btn-hover-start: #1c1d27;
+  --btn-hover-end: #11121a;
+  --btn-border: rgba(255, 255, 255, 0.12);
+  --btn-shadow-light: rgba(255, 255, 255, 0.05);
+  --btn-shadow-dark: rgba(0, 0, 0, 0.85);
 
   /* Body background gradient */
-  --body-radial-from: #f8fafd;
-  --body-radial-to: #e5eaf2;
+  --body-radial-from: #080912;
+  --body-radial-to: #000000;
 
   /* Border & Scrollbar */
-  --border: rgba(0, 0, 0, 0.09);
-  --scrollbar-bg: #e2e8f0;
-  --scrollbar-thumb-start: #ffffff;
-  --scrollbar-thumb-end: #cbd5e1;
+  --border: rgba(255, 255, 255, 0.08);
+  --scrollbar-bg: #000000;
+  --scrollbar-thumb-start: #1c1d27;
+  --scrollbar-thumb-end: #0c0d13;
 
-  /* Semantic LED colors */
+  /* Semantic Neon LED colors */
   --success: #10b981;
   --warning: #f59e0b;
   --danger: #ef4444;
-  --accent: #2563eb;
+  --accent: #00e5ff;
 }
 
 .dark {
-  /* Dark matte plastic colors */
-  --background: #1e1f22;
-  --foreground: #e0e2e5;
+  /* Pitch Black Cyber/Obsidian Theme */
+  --background: #000000;
+  --foreground: #f1f5f9;
   
-  /* Skeuomorphic surfaces */
-  --panel-bg: #2b2d31;
-  --panel-highlight: rgba(255, 255, 255, 0.08);
-  --panel-shadow-dark: rgba(0, 0, 0, 0.5);
-  --panel-shadow-light: rgba(255, 255, 255, 0.05);
-  --card-border: rgba(0, 0, 0, 0.2);
+  --panel-bg: #07070a;
+  --panel-highlight: rgba(255, 255, 255, 0.06);
+  --panel-shadow-dark: rgba(0, 0, 0, 0.95);
+  --panel-shadow-light: rgba(255, 255, 255, 0.03);
+  --card-border: rgba(255, 255, 255, 0.08);
   
-  /* Inset areas (screens, sunken panels) */
-  --inset-bg: #111214;
-  --inset-shadow-dark: rgba(0, 0, 0, 0.8);
-  --inset-shadow-light: rgba(255, 255, 255, 0.1);
-  --inset-border: rgba(0, 0, 0, 0.8);
+  --inset-bg: #030305;
+  --inset-shadow-dark: rgba(0, 0, 0, 0.98);
+  --inset-shadow-light: rgba(255, 255, 255, 0.02);
+  --inset-border: rgba(255, 255, 255, 0.06);
 
-  /* Button surfaces */
-  --btn-bg-start: #383a40;
-  --btn-bg-end: #2b2d31;
-  --btn-hover-start: #3f4147;
-  --btn-hover-end: #323439;
-  --btn-border: rgba(0, 0, 0, 0.3);
+  --btn-bg-start: #12131a;
+  --btn-bg-end: #090a0f;
+  --btn-hover-start: #1c1d27;
+  --btn-hover-end: #11121a;
+  --btn-border: rgba(255, 255, 255, 0.12);
   --btn-shadow-light: rgba(255, 255, 255, 0.05);
-  --btn-shadow-dark: rgba(0, 0, 0, 0.5);
+  --btn-shadow-dark: rgba(0, 0, 0, 0.85);
 
-  /* Body background gradient */
-  --body-radial-from: #2b2d31;
-  --body-radial-to: #1e1f22;
+  --body-radial-from: #080912;
+  --body-radial-to: #000000;
 
-  /* Border & Scrollbar */
-  --border: rgba(255, 255, 255, 0.1);
-  --scrollbar-bg: #111214;
-  --scrollbar-thumb-start: #383a40;
-  --scrollbar-thumb-end: #2b2d31;
+  --border: rgba(255, 255, 255, 0.08);
+  --scrollbar-bg: #000000;
+  --scrollbar-thumb-start: #1c1d27;
+  --scrollbar-thumb-end: #0c0d13;
 
-  /* Semantic LED colors */
   --success: #10b981;
   --warning: #f59e0b;
   --danger: #ef4444;
-  --accent: #3b82f6;
+  --accent: #00e5ff;
 }
 
 @theme inline {
@@ -106,9 +100,12 @@
 }
 
 body {
-  background-color: var(--background);
-  /* Subtle depth texture for matte finish */
-  background-image: radial-gradient(circle at 50% 0%, var(--body-radial-from) 0%, var(--body-radial-to) 100%);
+  background-color: #000000;
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(0, 229, 255, 0.05) 0%, transparent 60%),
+    radial-gradient(circle at 100% 100%, rgba(139, 92, 246, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 0% 50%, rgba(239, 68, 68, 0.03) 0%, transparent 50%);
+  background-attachment: fixed;
   color: var(--foreground);
   font-family: var(--font-sans), sans-serif;
   margin: 0;
@@ -117,66 +114,105 @@ body {
 }
 
 /* =========================================
-   SKEUOMORPHIC UTILITIES
+   STAR BORDER & AI ANIMATIONS
    ========================================= */
 
-/* Raised Panel */
-@utility skeuo-card {
-  background-color: var(--panel-bg);
-  border-radius: 12px;
-  box-shadow: 
-    -4px -4px 10px var(--panel-shadow-light),
-    4px 4px 12px var(--panel-shadow-dark),
-    inset 1px 1px 1px var(--panel-highlight);
-  border: 1px solid var(--card-border);
+@keyframes star-movement-bottom {
+  0% { transform: translate(0%, 0%); opacity: 1; }
+  100% { transform: translate(-100%, 0%); opacity: 0; }
 }
 
-/* Sunken Screen / Inset Area */
+@keyframes star-movement-top {
+  0% { transform: translate(0%, 0%); opacity: 1; }
+  100% { transform: translate(100%, 0%); opacity: 0; }
+}
+
+.animate-star-movement-bottom {
+  animation: star-movement-bottom 6s linear infinite alternate;
+}
+
+.animate-star-movement-top {
+  animation: star-movement-top 6s linear infinite alternate;
+}
+
+/* AI Animations */
+@keyframes ai-spark-spin {
+  0% { transform: scale(1) rotate(0deg); opacity: 0.9; }
+  50% { transform: scale(1.15) rotate(90deg); opacity: 1; }
+  100% { transform: scale(1) rotate(180deg); opacity: 0.9; }
+}
+
+.animate-ai-spark {
+  animation: ai-spark-spin 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes text-gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient-text {
+  background-size: 200% auto;
+  animation: text-gradient-shift 5s ease infinite;
+}
+
+/* =========================================
+   DARK SKEUOMORPHIC / OBSIDIAN GLASS UTILITIES
+   ========================================= */
+
+@utility skeuo-card {
+  background-color: var(--panel-bg);
+  border-radius: 16px;
+  box-shadow: 
+    0 10px 30px -10px rgba(0, 0, 0, 0.9),
+    inset 0 1px 1px var(--panel-highlight);
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(12px);
+}
+
 @utility skeuo-inset {
   background-color: var(--inset-bg);
-  border-radius: 8px;
+  border-radius: 12px;
   box-shadow: 
-    inset 3px 3px 6px var(--inset-shadow-dark),
-    inset -1px -1px 3px var(--inset-shadow-light);
+    inset 0 2px 6px var(--inset-shadow-dark),
+    inset 0 -1px 1px var(--inset-shadow-light);
   border: 1px solid var(--inset-border);
 }
 
-/* Raised Button (Pushable) */
 @utility skeuo-button {
   background: linear-gradient(135deg, var(--btn-bg-start) 0%, var(--btn-bg-end) 100%);
-  border-radius: 8px;
+  border-radius: 12px;
   border: 1px solid var(--btn-border);
   box-shadow: 
-    -2px -2px 6px var(--btn-shadow-light),
-    3px 3px 8px var(--btn-shadow-dark),
-    inset 1px 1px 1px var(--panel-highlight);
+    0 4px 12px rgba(0, 0, 0, 0.6),
+    inset 0 1px 1px var(--panel-highlight);
   color: var(--foreground);
-  transition: all 0.15s ease-out;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 
   &:hover {
     background: linear-gradient(135deg, var(--btn-hover-start) 0%, var(--btn-hover-end) 100%);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.1);
   }
 
   &:active {
-    background: var(--panel-bg);
+    background: var(--inset-bg);
     box-shadow: 
-      inset 2px 2px 5px var(--inset-shadow-dark),
-      inset -1px -1px 2px var(--inset-shadow-light);
+      inset 0 2px 4px var(--inset-shadow-dark);
     transform: translateY(1px);
   }
 }
 
-/* Specific glowing LED bulb effect */
 @utility skeuo-led {
   border-radius: 50%;
   box-shadow: 
-    inset -2px -2px 4px rgba(0,0,0,0.4),
-    inset 2px 2px 4px rgba(255,255,255,0.6),
-    0 0 10px currentColor; /* glow */
-  border: 1px solid rgba(0,0,0,0.5);
+    inset -1px -1px 3px rgba(0,0,0,0.8),
+    inset 1px 1px 2px rgba(255,255,255,0.4),
+    0 0 12px currentColor;
+  border: 1px solid rgba(0,0,0,0.8);
   position: relative;
   
-  /* The little white reflection dot on the bulb */
   &::after {
     content: '';
     position: absolute;
@@ -184,21 +220,23 @@ body {
     left: 15%;
     width: 30%;
     height: 30%;
-    background: rgba(255,255,255,0.8);
+    background: rgba(255,255,255,0.9);
     border-radius: 50%;
-    filter: blur(1px);
+    filter: blur(0.5px);
   }
 }
 
-/* Override scrollbar to fit skeuo style */
+/* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   background-color: var(--scrollbar-bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(90deg, var(--scrollbar-thumb-start), var(--scrollbar-thumb-end));
-  border-radius: 6px;
-  border: 2px solid var(--scrollbar-bg);
-  box-shadow: inset 1px 1px 1px rgba(255,255,255,0.2);
+  background: linear-gradient(180deg, var(--scrollbar-thumb-start), var(--scrollbar-thumb-end));
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2a2b38;
 }
