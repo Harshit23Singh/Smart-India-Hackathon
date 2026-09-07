@@ -32,7 +32,15 @@ export default function Dashboard() {
     setResult(null);
 
     const formData = new FormData();
-    formData.append("file", file, (file as File).name || "recording.wav");
+    const isNamedFile = file instanceof File && Boolean(file.name);
+    let fileName = isNamedFile ? (file as File).name : "audio_sample.wav";
+    if (!isNamedFile) {
+      if (file.type.includes("webm")) fileName = `record_${Date.now()}.webm`;
+      else if (file.type.includes("mp4")) fileName = `record_${Date.now()}.mp4`;
+      else if (file.type.includes("ogg")) fileName = `record_${Date.now()}.ogg`;
+      else fileName = `record_${Date.now()}.wav`;
+    }
+    formData.append("file", file, fileName);
 
     try {
       const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:7860";

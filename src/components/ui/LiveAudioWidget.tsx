@@ -13,10 +13,15 @@ export default function LiveAudioWidget({ onAudioRecorded, disabled }: LiveAudio
   const [isRecording, setIsRecording] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [duration, setDuration] = useState(0);
+  const [frequencyData, setFrequencyData] = useState<number[]>(Array(32).fill(12));
   
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<BlobPart[]>([]);
   const streamRef = useRef<MediaStream | null>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const analyserRef = useRef<AnalyserNode | null>(null);
+  const sourceRef = useRef<MediaStreamAudioSourceNode | null>(null);
+  const animationFrameRef = useRef<number | null>(null);
   const isResettingRef = useRef(false);
 
   useEffect(() => {
@@ -31,8 +36,24 @@ export default function LiveAudioWidget({ onAudioRecorded, disabled }: LiveAudio
     };
   }, [isRecording, isPaused]);
 
+  const stopAudioContext = () => {
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current);
+      animationFrameRef.current = null;
+    }
+    if (sourceRef.current) {
+      sourceRef.current.disconnect();
+      sourceRef.current = null;
+    }
+    if (audioContextRef.current && audioContextRef.current.state !== "closed") {
+      audioContextRef.current.close().catch(() => {});
+      audioContextRef.current = null;
+    }
+  };
+
   useEffect(() => {
     return () => {
+      stopAudioContext();
       if (streamRef.current) {
         streamRef.current.getTracks().forEach((track) => track.stop());
       }
@@ -50,7 +71,50 @@ export default function LiveAudioWidget({ onAudioRecorded, disabled }: LiveAudio
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       streamRef.current = stream;
-      const mediaRecorder = new MediaRecorder(stream);
+
+      // Setup Web Audio API Real FFT Frequency Analyzer
+      const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      const audioCtx = new AudioContextClass();
+      audioContextRef.current = audioCtx;
+
+      const analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 128;
+      analyser.smoothingTimeConstant = 0.65;
+      analyserRef.current = analyser;
+
+      const source = audioCtx.createMediaStreamSource(stream);
+      source.connect(analyser);
+      sourceRef.current = source;
+
+      // Real-time Visualizer Animation Loop
+      const dataArray = new Uint8Array(analyser.frequencyBinCount);
+      const updateVisualizer = () => {
+        if (!analyserRef.current) return;
+        analyserRef.current.getByteFrequencyData(dataArray);
+
+        const bars: number[] = [];
+        const step = Math.max(1, Math.floor(dataArray.length / 32));
+        for (let i = 0; i < 32; i++) {
+          const val = dataArray[i * step] || 0;
+          const normalized = Math.max(12, Math.min(100, Math.round((val / 255) * 100)));
+          bars.push(normalized);
+        }
+        setFrequencyData(bars);
+        animationFrameRef.current = requestAnimationFrame(updateVisualizer);
+      };
+      updateVisualizer();
+
+      // Determine supported mime type
+      const mimeType = MediaRecorder.isTypeSupported("audio/webm;codecs=opus")
+        ? "audio/webm;codecs=opus"
+        : MediaRecorder.isTypeSupported("audio/webm")
+        ? "audio/webm"
+        : MediaRecorder.isTypeSupported("audio/mp4")
+        ? "audio/mp4"
+        : "";
+
+      const options = mimeType ? { mimeType } : undefined;
+      const mediaRecorder = new MediaRecorder(stream, options);
       mediaRecorderRef.current = mediaRecorder;
       chunksRef.current = [];
       isResettingRef.current = false;
@@ -62,21 +126,25 @@ export default function LiveAudioWidget({ onAudioRecorded, disabled }: LiveAudio
       };
 
       mediaRecorder.onstop = () => {
+        stopAudioContext();
+        if (streamRef.current) {
+          streamRef.current.getTracks().forEach((track) => track.stop());
+        }
+
         if (isResettingRef.current) {
           isResettingRef.current = false;
           chunksRef.current = [];
           return;
         }
-        const blob = new Blob(chunksRef.current, { type: "audio/wav" });
-        if (onAudioRecorded) {
+
+        const actualMime = mediaRecorder.mimeType || "audio/webm";
+        const blob = new Blob(chunksRef.current, { type: actualMime });
+        if (onAudioRecorded && blob.size > 0) {
           onAudioRecorded(blob);
-        }
-        if (streamRef.current) {
-          streamRef.current.getTracks().forEach((track) => track.stop());
         }
       };
 
-      mediaRecorder.start();
+      mediaRecorder.start(250);
       setIsRecording(true);
       setIsPaused(false);
       setDuration(0);
@@ -93,6 +161,7 @@ export default function LiveAudioWidget({ onAudioRecorded, disabled }: LiveAudio
       mediaRecorderRef.current.stop();
       setIsRecording(false);
       setIsPaused(false);
+      setFrequencyData(Array(32).fill(12));
     }
   };
 
@@ -112,14 +181,16 @@ export default function LiveAudioWidget({ onAudioRecorded, disabled }: LiveAudio
     if (mediaRecorderRef.current && isRecording) {
       isResettingRef.current = true;
       mediaRecorderRef.current.stop();
-      if (streamRef.current) {
-        streamRef.current.getTracks().forEach((track) => track.stop());
-      }
+    }
+    stopAudioContext();
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((track) => track.stop());
     }
     setIsRecording(false);
     setIsPaused(false);
     setDuration(0);
     chunksRef.current = [];
+    setFrequencyData(Array(32).fill(12));
   };
 
   const isLive = isRecording && !isPaused;
@@ -158,20 +229,22 @@ export default function LiveAudioWidget({ onAudioRecorded, disabled }: LiveAudio
         <p className="text-sm text-white/60 mb-4">Real-time spectral analysis for live audio streaming</p>
 
         {/* Waveform visualizer inside a dark cockpit inset */}
-        <div className="bg-[#020204] border border-white/10 rounded-xl flex items-center justify-center gap-1.5 h-24 px-4 overflow-hidden shadow-inner">
-          {[...Array(32)].map((_, i) => (
-            <div
-              key={i}
-              className={`w-1 rounded-full transition-all duration-150 ${isLive ? "bg-accent shadow-[0_0_8px_#00e5ff]" : "bg-white/15"}`}
-              style={isLive ? {
-                height: `${Math.max(12, Math.random() * 95)}%`,
-                animationDelay: `${i * 0.04}s`,
-                animationDuration: `${0.4 + Math.random() * 0.5}s`,
-              } : {
-                height: "12%",
-              }}
-            />
-          ))}
+        <div className="bg-[#020204] border border-white/10 rounded-xl flex items-end justify-center gap-1.5 h-24 px-4 py-3 overflow-hidden shadow-inner">
+          {frequencyData.map((height, i) => {
+            const barColor = isLive
+              ? (height > 60 ? "bg-red-500 shadow-[0_0_8px_#ef4444]" : height > 35 ? "bg-amber-400" : "bg-cyan-400 shadow-[0_0_8px_#00e5ff]")
+              : "bg-white/15";
+
+            return (
+              <div
+                key={i}
+                className={`w-1.5 rounded-full transition-all duration-75 ${barColor}`}
+                style={{
+                  height: `${height}%`,
+                }}
+              />
+            );
+          })}
         </div>
 
         {/* Timer display */}
