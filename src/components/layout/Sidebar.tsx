@@ -30,13 +30,13 @@ export default function Sidebar() {
     <aside className="w-64 h-full hidden md:flex flex-col bg-[#050508] border-r border-white/10 z-20">
       {/* Logo Area */}
       <div className="p-6 flex items-center gap-3 border-b border-white/5">
-        <div className="bg-gradient-to-br from-cyan-500/20 via-blue-500/10 to-purple-500/20 border border-cyan-400/30 p-2.5 rounded-xl text-cyan-400 shadow-[0_0_20px_rgba(0,229,255,0.25)] flex items-center justify-center">
-          <AiSparkIcon size={20} />
+        <div className="bg-cyan-500/10 border border-cyan-400/20 p-2.5 rounded-xl text-cyan-400 flex items-center justify-center">
+          <AiSparkIcon size={20} glow={false} />
         </div>
         <div>
           <h1 className="text-xl font-extrabold tracking-tight text-white flex items-center gap-1.5">
             Swaraksha{" "}
-            <span className="text-cyan-300 text-xs font-mono px-1.5 py-0.5 rounded bg-cyan-500/15 border border-cyan-400/30 shadow-[0_0_8px_rgba(0,229,255,0.3)] font-bold">
+            <span className="text-white text-xs font-mono px-1.5 py-0.5 rounded bg-white/10 border border-white/20 font-bold">
               AI
             </span>
           </h1>

@@ -82,12 +82,9 @@ export default function Dashboard() {
             </span>
           </div>
 
-          {/* AI Title - Clean Sharp Modern Gradient */}
+          {/* AI Title - Solid White */}
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white leading-tight">
-            Welcome to{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-indigo-400 font-black">
-              Swaraksha AI
-            </span>
+            Welcome to <span className="text-white font-black">Swaraksha AI</span>
           </h1>
 
           {/* Subtitle & AI Capability Pills */}
