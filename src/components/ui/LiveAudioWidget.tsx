@@ -69,7 +69,13 @@ export default function LiveAudioWidget({ onAudioRecorded, disabled }: LiveAudio
   const startRecording = async () => {
     if (disabled) return;
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          echoCancellation: false,
+          noiseSuppression: false,
+          autoGainControl: false,
+        }
+      });
       streamRef.current = stream;
 
       // Setup Web Audio API Real FFT Frequency Analyzer
