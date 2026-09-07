@@ -36,20 +36,32 @@ export default function Dashboard() {
 
     try {
       const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:7860";
-      const response = await fetch(`${apiBase}/predict`, {
-        method: "POST",
-        body: formData,
-      });
+      let response: Response;
+
+      try {
+        response = await fetch(`${apiBase}/predict`, {
+          method: "POST",
+          body: formData,
+        });
+      } catch {
+        // Fallback to internal route if backend connection failed
+        response = await fetch("/api/predict", {
+          method: "POST",
+          body: formData,
+        });
+      }
 
       if (!response.ok) {
-        throw new Error(`API error: ${response.status} ${response.statusText}`);
+        const errorJson = await response.json().catch(() => null);
+        const detailMsg = errorJson?.detail || `Server error (${response.status}): ${response.statusText}`;
+        throw new Error(detailMsg);
       }
 
       const data = await response.json();
       setResult(data);
     } catch (err: any) {
       console.error("Error analyzing audio:", err);
-      setError(err.message || "Failed to connect to the analysis server.");
+      setError(err.message || "Failed to analyze audio sample.");
     } finally {
       setIsAnalyzing(false);
     }
