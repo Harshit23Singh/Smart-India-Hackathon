@@ -34,7 +34,8 @@ export default function Dashboard() {
     formData.append("file", file, (file as File).name || "recording.wav");
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/predict", {
+      const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:7860";
+      const response = await fetch(`${apiBase}/predict`, {
         method: "POST",
         body: formData,
       });
@@ -42,6 +43,7 @@ export default function Dashboard() {
       if (!response.ok) {
         throw new Error(`API error: ${response.status} ${response.statusText}`);
       }
+
 
       const data = await response.json();
       setResult(data);
