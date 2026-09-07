@@ -24,11 +24,11 @@ export default function ThreatHistoryPage() {
         </div>
         
         <div className="flex items-center gap-3">
-          <button className="px-4 py-2 bg-white/5 border border-border hover:bg-white/10 rounded-lg flex items-center gap-2 transition-colors text-sm font-medium">
+          <button className="px-4 py-2 skeuo-button rounded-lg flex items-center gap-2 transition-colors text-sm font-medium cursor-pointer">
             <Filter size={16} />
             Filter
           </button>
-          <button className="px-4 py-2 bg-white/5 border border-border hover:bg-white/10 rounded-lg flex items-center gap-2 transition-colors text-sm font-medium">
+          <button className="px-4 py-2 skeuo-button rounded-lg flex items-center gap-2 transition-colors text-sm font-medium cursor-pointer">
             <Download size={16} />
             Export
           </button>
@@ -38,13 +38,13 @@ export default function ThreatHistoryPage() {
       <div className="skeuo-card overflow-hidden">
         
         {/* Search Bar */}
-        <div className="p-4 border-b border-border flex items-center bg-white/5">
+        <div className="p-4 border-b border-border flex items-center bg-foreground/5">
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground/40" size={18} />
             <input 
               type="text" 
               placeholder="Search by ID, filename, or result..." 
-              className="w-full pl-10 pr-4 py-2 bg-background border border-border rounded-lg text-sm focus:outline-none focus:border-accent transition-colors"
+              className="w-full pl-10 pr-4 py-2 skeuo-inset rounded-lg text-sm text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-1 focus:ring-accent transition-colors"
             />
           </div>
         </div>
@@ -52,7 +52,7 @@ export default function ThreatHistoryPage() {
         {/* Table */}
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm whitespace-nowrap">
-            <thead className="bg-white/5 border-b border-border text-foreground/60 uppercase tracking-wider text-xs">
+            <thead className="bg-foreground/5 border-b border-border text-foreground/60 uppercase tracking-wider text-xs">
               <tr>
                 <th className="px-6 py-4 font-medium">Date & Time</th>
                 <th className="px-6 py-4 font-medium">Audio / Call</th>
@@ -65,7 +65,7 @@ export default function ThreatHistoryPage() {
             </thead>
             <tbody className="divide-y divide-border/50">
               {historyData.map((row) => (
-                <tr key={row.id} className="hover:bg-white/5 transition-colors group">
+                <tr key={row.id} className="hover:bg-foreground/5 transition-colors group">
                   <td className="px-6 py-4 text-foreground/80">{row.date}</td>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
@@ -113,11 +113,11 @@ export default function ThreatHistoryPage() {
         <div className="p-4 border-t border-border flex items-center justify-between text-sm text-foreground/60">
           <span>Showing 1 to 7 of 1,284 entries</span>
           <div className="flex gap-1">
-            <button className="px-3 py-1 border border-border rounded hover:bg-white/5 disabled:opacity-50">Prev</button>
+            <button className="px-3 py-1 border border-border rounded hover:bg-foreground/5 disabled:opacity-50">Prev</button>
             <button className="px-3 py-1 bg-accent text-white rounded">1</button>
-            <button className="px-3 py-1 border border-border rounded hover:bg-white/5">2</button>
-            <button className="px-3 py-1 border border-border rounded hover:bg-white/5">3</button>
-            <button className="px-3 py-1 border border-border rounded hover:bg-white/5 disabled:opacity-50">Next</button>
+            <button className="px-3 py-1 border border-border rounded hover:bg-foreground/5">2</button>
+            <button className="px-3 py-1 border border-border rounded hover:bg-foreground/5">3</button>
+            <button className="px-3 py-1 border border-border rounded hover:bg-foreground/5 disabled:opacity-50">Next</button>
           </div>
         </div>
 

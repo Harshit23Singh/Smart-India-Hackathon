@@ -39,7 +39,7 @@ export default function LiveDetectionPage() {
             </button>
           )}
           {demoState !== "idle" && (
-            <button onClick={resetDemo} className="px-4 py-2 bg-white/10 hover:bg-white/20 text-foreground rounded-lg flex items-center gap-2 transition-colors font-medium">
+            <button onClick={resetDemo} className="px-4 py-2 skeuo-button text-foreground rounded-lg flex items-center gap-2 transition-colors font-medium cursor-pointer">
               <Square size={18} />
               Reset
             </button>
@@ -163,10 +163,10 @@ export default function LiveDetectionPage() {
                     <button className="px-5 py-2.5 bg-danger hover:bg-danger/90 text-white font-medium rounded-lg transition-colors">
                       Block Caller
                     </button>
-                    <button className="px-5 py-2.5 bg-white/10 hover:bg-white/20 text-foreground font-medium rounded-lg transition-colors">
+                    <button className="px-5 py-2.5 skeuo-button text-foreground font-medium rounded-lg transition-colors cursor-pointer">
                       Verify Identity
                     </button>
-                    <button className="px-5 py-2.5 bg-white/10 hover:bg-white/20 text-foreground font-medium rounded-lg transition-colors">
+                    <button className="px-5 py-2.5 skeuo-button text-foreground font-medium rounded-lg transition-colors cursor-pointer">
                       Report Threat
                     </button>
                   </div>

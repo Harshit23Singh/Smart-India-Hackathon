@@ -2,6 +2,8 @@
 
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Legend } from "recharts";
 import ThreatChart from "@/components/dashboard/ThreatChart";
+import { useTheme } from "@/components/theme/ThemeProvider";
+import { useEffect, useState } from "react";
 
 const categoryData = [
   { name: 'Voice Cloning', value: 45 },
@@ -20,6 +22,23 @@ const confidenceData = [
 ];
 
 export default function AnalyticsPage() {
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const isDark = mounted ? resolvedTheme === "dark" : true;
+
+  const tooltipStyle = {
+    backgroundColor: isDark ? '#2b2d31' : '#ffffff',
+    borderColor: isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.1)',
+    borderRadius: '10px',
+    color: isDark ? '#e0e2e5' : '#1c222b',
+    boxShadow: isDark ? '0 10px 25px rgba(0,0,0,0.5)' : '0 10px 25px rgba(0,0,0,0.1)'
+  };
+
   return (
     <div className="max-w-7xl mx-auto space-y-6">
       
@@ -52,10 +71,10 @@ export default function AnalyticsPage() {
                   ))}
                 </Pie>
                 <RechartsTooltip 
-                  contentStyle={{ backgroundColor: 'rgba(15, 23, 42, 0.9)', borderColor: 'rgba(51, 65, 85, 0.5)', borderRadius: '8px', color: '#fff' }}
-                  itemStyle={{ color: '#fff' }}
+                  contentStyle={tooltipStyle}
+                  itemStyle={{ color: isDark ? '#ffffff' : '#1c222b' }}
                 />
-                <Legend verticalAlign="bottom" height={36} wrapperStyle={{ fontSize: '12px', color: '#cbd5e1' }}/>
+                <Legend verticalAlign="bottom" height={36} wrapperStyle={{ fontSize: '12px' }}/>
               </PieChart>
             </ResponsiveContainer>
             
@@ -85,12 +104,16 @@ export default function AnalyticsPage() {
                 data={confidenceData}
                 margin={{ top: 20, right: 30, left: -20, bottom: 5 }}
               >
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(51, 65, 85, 0.2)" vertical={false} />
-                <XAxis dataKey="name" stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
-                <YAxis stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
+                <CartesianGrid 
+                  strokeDasharray="3 3" 
+                  stroke={isDark ? "rgba(255, 255, 255, 0.08)" : "rgba(0, 0, 0, 0.07)"} 
+                  vertical={false} 
+                />
+                <XAxis dataKey="name" stroke={isDark ? "#94a3b8" : "#64748b"} fontSize={12} tickLine={false} axisLine={false} />
+                <YAxis stroke={isDark ? "#94a3b8" : "#64748b"} fontSize={12} tickLine={false} axisLine={false} />
                 <RechartsTooltip 
-                  contentStyle={{ backgroundColor: 'rgba(15, 23, 42, 0.9)', borderColor: 'rgba(51, 65, 85, 0.5)', borderRadius: '8px' }}
-                  cursor={{ fill: 'rgba(255, 255, 255, 0.05)' }}
+                  contentStyle={tooltipStyle}
+                  cursor={{ fill: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.04)' }}
                 />
                 <Legend wrapperStyle={{ fontSize: '12px' }}/>
                 <Bar dataKey="threats" name="Threats" fill="#ef4444" radius={[4, 4, 0, 0]} barSize={30} />
@@ -105,39 +128,39 @@ export default function AnalyticsPage() {
           <h3 className="text-lg font-semibold text-foreground mb-6">System Performance</h3>
           
           <div className="space-y-6 flex-1">
-            <div className="p-4 bg-white/5 rounded-xl border border-white/5">
+            <div className="p-4 skeuo-inset rounded-xl">
               <div className="flex justify-between items-center mb-2">
                 <span className="text-sm font-medium text-foreground/70">Average Analysis Time</span>
                 <span className="text-lg font-bold text-accent">1.24s</span>
               </div>
-              <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+              <div className="h-1.5 w-full bg-foreground/10 rounded-full overflow-hidden">
                 <div className="h-full bg-accent rounded-full" style={{ width: '25%' }}></div>
               </div>
             </div>
 
-            <div className="p-4 bg-white/5 rounded-xl border border-white/5">
+            <div className="p-4 skeuo-inset rounded-xl">
               <div className="flex justify-between items-center mb-2">
                 <span className="text-sm font-medium text-foreground/70">False Positive Rate</span>
                 <span className="text-lg font-bold text-success">0.8%</span>
               </div>
-              <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+              <div className="h-1.5 w-full bg-foreground/10 rounded-full overflow-hidden">
                 <div className="h-full bg-success rounded-full" style={{ width: '8%' }}></div>
               </div>
             </div>
 
-            <div className="p-4 bg-white/5 rounded-xl border border-white/5">
+            <div className="p-4 skeuo-inset rounded-xl">
               <div className="flex justify-between items-center mb-2">
                 <span className="text-sm font-medium text-foreground/70">API Uptime</span>
                 <span className="text-lg font-bold text-success">99.99%</span>
               </div>
-              <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+              <div className="h-1.5 w-full bg-foreground/10 rounded-full overflow-hidden">
                 <div className="h-full bg-success rounded-full" style={{ width: '100%' }}></div>
               </div>
             </div>
             
             <div className="mt-auto pt-4 border-t border-border flex items-center justify-between">
               <span className="text-xs text-foreground/50">Last updated: Just now</span>
-              <button className="text-xs text-accent hover:underline">Download Full Report</button>
+              <button className="text-xs text-accent hover:underline cursor-pointer">Download Full Report</button>
             </div>
           </div>
         </div>
@@ -147,4 +170,3 @@ export default function AnalyticsPage() {
     </div>
   );
 }
-

@@ -11,19 +11,11 @@ interface StatCardProps {
 }
 
 export default function StatCard({ title, value, icon: Icon, trend, trendUp, type = "default" }: StatCardProps) {
-  
-  const typeStyles = {
-    default: "text-foreground bg-card border-border",
-    danger: "text-danger bg-danger/10 border-danger/20",
-    success: "text-success bg-success/10 border-success/20",
-    accent: "text-accent bg-accent/10 border-accent/20",
-  };
-  
   const iconBgStyles = {
-    default: "bg-white/5 text-foreground/70",
-    danger: "bg-danger/20 text-danger",
-    success: "bg-success/20 text-success",
-    accent: "bg-accent/20 text-accent",
+    default: "bg-foreground/5 text-foreground/70",
+    danger: "bg-danger/15 text-danger",
+    success: "bg-success/15 text-success",
+    accent: "bg-accent/15 text-accent",
   };
 
   return (

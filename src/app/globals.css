@@ -1,6 +1,52 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
+  /* Light mode palette (clean, tactile, modern matte console) */
+  --background: #edf1f7;
+  --foreground: #1c222b;
+  
+  /* Skeuomorphic surfaces */
+  --panel-bg: #ffffff;
+  --panel-highlight: rgba(255, 255, 255, 0.95);
+  --panel-shadow-dark: rgba(160, 175, 200, 0.45);
+  --panel-shadow-light: rgba(255, 255, 255, 0.9);
+  --card-border: rgba(0, 0, 0, 0.08);
+  
+  /* Inset areas (screens, sunken panels) */
+  --inset-bg: #e5ebf4;
+  --inset-shadow-dark: rgba(160, 175, 200, 0.55);
+  --inset-shadow-light: rgba(255, 255, 255, 0.95);
+  --inset-border: rgba(0, 0, 0, 0.08);
+
+  /* Button surfaces */
+  --btn-bg-start: #ffffff;
+  --btn-bg-end: #e8edf5;
+  --btn-hover-start: #ffffff;
+  --btn-hover-end: #dfe6f0;
+  --btn-border: rgba(0, 0, 0, 0.12);
+  --btn-shadow-light: rgba(255, 255, 255, 0.9);
+  --btn-shadow-dark: rgba(160, 175, 200, 0.45);
+
+  /* Body background gradient */
+  --body-radial-from: #f8fafd;
+  --body-radial-to: #e5eaf2;
+
+  /* Border & Scrollbar */
+  --border: rgba(0, 0, 0, 0.09);
+  --scrollbar-bg: #e2e8f0;
+  --scrollbar-thumb-start: #ffffff;
+  --scrollbar-thumb-end: #cbd5e1;
+
+  /* Semantic LED colors */
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --accent: #2563eb;
+}
+
+.dark {
   /* Dark matte plastic colors */
   --background: #1e1f22;
   --foreground: #e0e2e5;
@@ -10,11 +56,32 @@
   --panel-highlight: rgba(255, 255, 255, 0.08);
   --panel-shadow-dark: rgba(0, 0, 0, 0.5);
   --panel-shadow-light: rgba(255, 255, 255, 0.05);
+  --card-border: rgba(0, 0, 0, 0.2);
   
   /* Inset areas (screens, sunken panels) */
   --inset-bg: #111214;
   --inset-shadow-dark: rgba(0, 0, 0, 0.8);
   --inset-shadow-light: rgba(255, 255, 255, 0.1);
+  --inset-border: rgba(0, 0, 0, 0.8);
+
+  /* Button surfaces */
+  --btn-bg-start: #383a40;
+  --btn-bg-end: #2b2d31;
+  --btn-hover-start: #3f4147;
+  --btn-hover-end: #323439;
+  --btn-border: rgba(0, 0, 0, 0.3);
+  --btn-shadow-light: rgba(255, 255, 255, 0.05);
+  --btn-shadow-dark: rgba(0, 0, 0, 0.5);
+
+  /* Body background gradient */
+  --body-radial-from: #2b2d31;
+  --body-radial-to: #1e1f22;
+
+  /* Border & Scrollbar */
+  --border: rgba(255, 255, 255, 0.1);
+  --scrollbar-bg: #111214;
+  --scrollbar-thumb-start: #383a40;
+  --scrollbar-thumb-end: #2b2d31;
 
   /* Semantic LED colors */
   --success: #10b981;
@@ -30,6 +97,8 @@
   --font-mono: var(--font-geist-mono);
   
   --color-card: var(--panel-bg);
+  --color-inset: var(--inset-bg);
+  --color-border: var(--border);
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-danger: var(--danger);
@@ -38,12 +107,13 @@
 
 body {
   background-color: var(--background);
-  /* Subtle noise/texture for matte finish */
-  background-image: radial-gradient(circle at 50% 0%, #2b2d31 0%, #1e1f22 100%);
+  /* Subtle depth texture for matte finish */
+  background-image: radial-gradient(circle at 50% 0%, var(--body-radial-from) 0%, var(--body-radial-to) 100%);
   color: var(--foreground);
   font-family: var(--font-sans), sans-serif;
   margin: 0;
   padding: 0;
+  min-height: 100vh;
 }
 
 /* =========================================
@@ -54,12 +124,11 @@ body {
 @utility skeuo-card {
   background-color: var(--panel-bg);
   border-radius: 12px;
-  /* Top-left light, bottom-right dark shadow */
   box-shadow: 
     -4px -4px 10px var(--panel-shadow-light),
     4px 4px 12px var(--panel-shadow-dark),
-    inset 1px 1px 1px rgba(255,255,255,0.1);
-  border: 1px solid rgba(0,0,0,0.2);
+    inset 1px 1px 1px var(--panel-highlight);
+  border: 1px solid var(--card-border);
 }
 
 /* Sunken Screen / Inset Area */
@@ -69,23 +138,23 @@ body {
   box-shadow: 
     inset 3px 3px 6px var(--inset-shadow-dark),
     inset -1px -1px 3px var(--inset-shadow-light);
-  border: 1px solid rgba(0,0,0,0.8);
+  border: 1px solid var(--inset-border);
 }
 
 /* Raised Button (Pushable) */
 @utility skeuo-button {
-  background: linear-gradient(135deg, #383a40 0%, #2b2d31 100%);
+  background: linear-gradient(135deg, var(--btn-bg-start) 0%, var(--btn-bg-end) 100%);
   border-radius: 8px;
-  border: 1px solid rgba(0,0,0,0.3);
+  border: 1px solid var(--btn-border);
   box-shadow: 
-    -2px -2px 6px var(--panel-shadow-light),
-    3px 3px 8px var(--panel-shadow-dark),
-    inset 1px 1px 1px rgba(255,255,255,0.15);
+    -2px -2px 6px var(--btn-shadow-light),
+    3px 3px 8px var(--btn-shadow-dark),
+    inset 1px 1px 1px var(--panel-highlight);
   color: var(--foreground);
-  transition: all 0.1s ease-out;
+  transition: all 0.15s ease-out;
 
   &:hover {
-    background: linear-gradient(135deg, #3f4147 0%, #323439 100%);
+    background: linear-gradient(135deg, var(--btn-hover-start) 0%, var(--btn-hover-end) 100%);
   }
 
   &:active {
@@ -123,14 +192,13 @@ body {
 
 /* Override scrollbar to fit skeuo style */
 ::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
-  background-color: var(--inset-bg);
-  box-shadow: inset 1px 1px 3px rgba(0,0,0,0.5);
+  width: 10px;
+  height: 10px;
+  background-color: var(--scrollbar-bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(90deg, #383a40, #2b2d31);
+  background: linear-gradient(90deg, var(--scrollbar-thumb-start), var(--scrollbar-thumb-end));
   border-radius: 6px;
-  border: 2px solid var(--inset-bg);
-  box-shadow: inset 1px 1px 1px rgba(255,255,255,0.1);
+  border: 2px solid var(--scrollbar-bg);
+  box-shadow: inset 1px 1px 1px rgba(255,255,255,0.2);
 }

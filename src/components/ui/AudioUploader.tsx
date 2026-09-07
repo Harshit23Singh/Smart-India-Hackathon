@@ -37,7 +37,7 @@ export default function AudioUploader({ onFileSelect, disabled }: AudioUploaderP
   return (
     <div className="skeuo-card p-6 flex flex-col h-full relative overflow-hidden">
       {/* Top highlight line */}
-      <div className="absolute top-0 left-4 right-4 h-px bg-white/10 rounded-full"></div>
+      <div className="absolute top-0 left-4 right-4 h-px bg-gradient-to-r from-transparent via-foreground/10 to-transparent rounded-full"></div>
 
       <div className="flex items-center gap-3 mb-4">
         <div className="skeuo-inset p-2 rounded-lg text-foreground/70">

@@ -128,7 +128,7 @@ export default function LiveAudioWidget({ onAudioRecorded, disabled }: LiveAudio
   return (
     <div className={`skeuo-card p-6 flex flex-col h-full relative overflow-hidden ${disabled ? "opacity-50 pointer-events-none" : ""}`}>
       {/* Subtle inner top-highlight line for depth */}
-      <div className="absolute top-0 left-4 right-4 h-px bg-white/10 rounded-full"></div>
+      <div className="absolute top-0 left-4 right-4 h-px bg-gradient-to-r from-transparent via-foreground/10 to-transparent rounded-full"></div>
 
       <div className="relative z-10 flex items-center justify-between mb-4">
         <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">

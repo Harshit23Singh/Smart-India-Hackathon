@@ -30,7 +30,7 @@ export default function ProtectedCallPage() {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-danger/5 rounded-full blur-3xl animate-pulse"></div>
 
           <div className="relative z-10 flex flex-col items-center">
-            <div className="h-32 w-32 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mb-6 shadow-2xl relative">
+            <div className="h-32 w-32 rounded-full skeuo-inset flex items-center justify-center mb-6 shadow-2xl relative">
               <User size={48} className="text-foreground/40" />
               <div className="absolute -bottom-2 -right-2 h-10 w-10 bg-danger rounded-full flex items-center justify-center border-4 border-background">
                 <AlertTriangle size={18} className="text-white" />
@@ -60,13 +60,13 @@ export default function ProtectedCallPage() {
             
             {/* Call Controls */}
             <div className="flex items-center gap-6 mt-12">
-              <button className="h-16 w-16 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-foreground transition-all">
+              <button className="h-16 w-16 rounded-full skeuo-button flex items-center justify-center text-foreground transition-all cursor-pointer">
                 <MicOff size={24} />
               </button>
-              <button className="h-20 w-20 rounded-full bg-danger hover:bg-danger/90 border-4 border-danger/20 flex items-center justify-center text-white transition-all shadow-lg shadow-danger/20">
+              <button className="h-20 w-20 rounded-full bg-danger hover:bg-danger/90 border-4 border-danger/20 flex items-center justify-center text-white transition-all shadow-lg shadow-danger/20 cursor-pointer">
                 <PhoneOff size={28} />
               </button>
-              <button className="h-16 w-16 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-foreground transition-all">
+              <button className="h-16 w-16 rounded-full skeuo-button flex items-center justify-center text-foreground transition-all cursor-pointer">
                 <PhoneForwarded size={24} />
               </button>
             </div>
@@ -86,7 +86,7 @@ export default function ProtectedCallPage() {
             <h3 className="text-lg font-semibold text-foreground mb-4">Recommended Actions</h3>
             
             <div className="space-y-3">
-              <button className="w-full flex items-center justify-between p-4 bg-white/5 hover:bg-white/10 border border-white/5 rounded-xl transition-colors text-left group">
+              <button className="w-full flex items-center justify-between p-4 skeuo-button rounded-xl transition-colors text-left group cursor-pointer">
                 <div>
                   <p className="font-medium text-foreground">Disconnect Call</p>
                   <p className="text-xs text-foreground/50 mt-1">End the current session immediately</p>
@@ -94,7 +94,7 @@ export default function ProtectedCallPage() {
                 <PhoneOff className="text-foreground/40 group-hover:text-danger transition-colors" size={20} />
               </button>
               
-              <button className="w-full flex items-center justify-between p-4 bg-white/5 hover:bg-white/10 border border-white/5 rounded-xl transition-colors text-left group">
+              <button className="w-full flex items-center justify-between p-4 skeuo-button rounded-xl transition-colors text-left group cursor-pointer">
                 <div>
                   <p className="font-medium text-foreground">Challenge Question</p>
                   <p className="text-xs text-foreground/50 mt-1">Ask predefined security question</p>
@@ -102,7 +102,7 @@ export default function ProtectedCallPage() {
                 <ShieldAlert className="text-foreground/40 group-hover:text-accent transition-colors" size={20} />
               </button>
 
-              <button className="w-full flex items-center justify-between p-4 bg-white/5 hover:bg-white/10 border border-white/5 rounded-xl transition-colors text-left group">
+              <button className="w-full flex items-center justify-between p-4 skeuo-button rounded-xl transition-colors text-left group cursor-pointer">
                 <div>
                   <p className="font-medium text-foreground">Record & Trace</p>
                   <p className="text-xs text-foreground/50 mt-1">Capture forensic evidence</p>
