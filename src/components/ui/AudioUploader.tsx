@@ -60,7 +60,7 @@ export default function AudioUploader({ onFileSelect, disabled }: AudioUploaderP
         type="file" 
         ref={fileInputRef} 
         onChange={handleFileChange} 
-        accept="audio/*" 
+        accept="audio/*,.mp3,.wav,.m4a,.flac,.ogg,.aac,.opus,.wma,.mpeg,.mpg,.mp4,.webm,.aiff,.aif,.caf,video/mpeg,video/mp4" 
         className="hidden" 
         disabled={disabled}
       />
@@ -87,7 +87,7 @@ export default function AudioUploader({ onFileSelect, disabled }: AudioUploaderP
         <p className="text-xs text-white/40">or click to browse from system</p>
 
         <div className="mt-5 rounded-xl bg-black/80 border border-white/10 px-5 py-2.5 flex flex-col items-center gap-0.5">
-          <p className="text-[11px] font-mono text-purple-300">WAV • MP3 • M4A • FLAC • OGG</p>
+          <p className="text-[11px] font-mono text-purple-300">WAV • MP3 • MPEG • M4A • FLAC • OGG</p>
           <p className="text-[10px] text-white/40">Maximum upload size: 25 MB</p>
         </div>
       </div>
