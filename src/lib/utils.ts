@@ -33,6 +33,8 @@ export function playSecurityChime() {
   }
 }
 
+let activeAudioInstance: HTMLAudioElement | null = null;
+
 // Pure Hindi Real-person banking fraud voice alert
 export const HINDI_FRAUD_MESSAGE = "धोखाधड़ी कॉल का पता चलने के कारण आपके सभी बैंक लेनदेन और खाते तत्काल प्रभाव से निलंबित कर दिए गए हैं।";
 
@@ -41,24 +43,65 @@ export function playHindiFraudAlert(
   onStart?: () => void,
   onEnd?: () => void
 ): boolean {
+  if (typeof window === "undefined") return false;
+
+  // Stop any ongoing audio or speech synthesis
+  stopVoiceAlert();
+
+  try {
+    // 1. Prioritize playing the real-person recorded alertt.ogg file
+    const audio = new Audio("/alertt.ogg");
+    activeAudioInstance = audio;
+    audio.volume = 1.0;
+
+    audio.onplay = () => {
+      if (onStart) onStart();
+    };
+
+    audio.onended = () => {
+      activeAudioInstance = null;
+      if (onEnd) onEnd();
+    };
+
+    audio.onerror = (e) => {
+      console.warn("Could not play /alertt.ogg audio file, falling back to neural speech synthesis:", e);
+      fallbackToSpeechSynthesis(text, onStart, onEnd);
+    };
+
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise.catch((playErr) => {
+        console.warn("Autoplay / audio element play error, falling back to speech synthesis:", playErr);
+        fallbackToSpeechSynthesis(text, onStart, onEnd);
+      });
+    }
+
+    return true;
+  } catch (err) {
+    console.error("Audio playback error, falling back:", err);
+    return fallbackToSpeechSynthesis(text, onStart, onEnd);
+  }
+}
+
+function fallbackToSpeechSynthesis(
+  text: string,
+  onStart?: () => void,
+  onEnd?: () => void
+): boolean {
   if (typeof window === "undefined" || !("speechSynthesis" in window)) {
-    console.warn("SpeechSynthesis not supported on this browser.");
+    if (onEnd) onEnd();
     return false;
   }
 
   try {
-    // 1. Play realistic alert chime first
     playSecurityChime();
-
-    // 2. Stop any ongoing speech
     window.speechSynthesis.cancel();
 
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = "hi-IN";
-    utterance.rate = 0.92;   // Natural authoritative cadence
-    utterance.pitch = 1.02;  // Clear, crisp tone
+    utterance.rate = 0.92;
+    utterance.pitch = 1.02;
 
-    // Try finding an authentic Hindi voice
     const voices = window.speechSynthesis.getVoices();
     const hindiVoice = voices.find(
       (v) =>
@@ -82,26 +125,36 @@ export function playHindiFraudAlert(
       if (onEnd) onEnd();
     };
 
-    utterance.onerror = (e) => {
-      console.warn("Speech synthesis error:", e);
+    utterance.onerror = () => {
       if (onEnd) onEnd();
     };
 
-    // Small delay after the security chime to sound completely natural
     setTimeout(() => {
       window.speechSynthesis.speak(utterance);
     }, 250);
 
     return true;
-  } catch (err) {
-    console.error("Failed to play Hindi fraud alert:", err);
+  } catch (e) {
+    console.error("Fallback speech synthesis failed:", e);
+    if (onEnd) onEnd();
     return false;
   }
 }
 
 export function stopVoiceAlert() {
-  if (typeof window !== "undefined" && "speechSynthesis" in window) {
-    window.speechSynthesis.cancel();
+  if (typeof window !== "undefined") {
+    if (activeAudioInstance) {
+      try {
+        activeAudioInstance.pause();
+        activeAudioInstance.currentTime = 0;
+      } catch {
+        // ignore
+      }
+      activeAudioInstance = null;
+    }
+    if ("speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+    }
   }
 }
 

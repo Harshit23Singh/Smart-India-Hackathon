@@ -9,8 +9,9 @@ import DetectionResult from "@/components/analysis/DetectionResult";
 import AnalysisPipeline from "@/components/analysis/AnalysisPipeline";
 import StarBorder from "@/components/ui/StarBorder";
 import AiSparkIcon from "@/components/ui/AiSparkIcon";
-import { Activity, ShieldAlert, Users, Target, RefreshCw, ShieldCheck, Cpu, Radio, Zap } from "lucide-react";
+import { Activity, ShieldAlert, Users, Target, RefreshCw, ShieldCheck, Cpu, Radio, Zap, Volume2 } from "lucide-react";
 import { useState } from "react";
+import { playHindiFraudAlert, stopVoiceAlert } from "@/lib/utils";
 
 interface ApiResult {
   prediction: string;
@@ -67,6 +68,9 @@ export default function Dashboard() {
 
       const data = await response.json();
       setResult(data);
+      if (data.prediction === "FAKE") {
+        playHindiFraudAlert();
+      }
     } catch (err: any) {
       console.error("Error analyzing audio:", err);
       setError(err.message || "Failed to analyze audio sample.");
@@ -76,6 +80,7 @@ export default function Dashboard() {
   };
 
   const resetAnalysis = () => {
+    stopVoiceAlert();
     setResult(null);
     setError(null);
   };
@@ -228,6 +233,18 @@ export default function Dashboard() {
                 ? `Voice appears genuine with ${result.real_probability.toFixed(1)}% probability. Analyzed ${result.duration_seconds.toFixed(1)}s of audio across ${result.chunks_analyzed} chunk(s).` 
                 : `Potential synthetic voice detected with ${result.fake_probability.toFixed(1)}% probability. Analyzed ${result.duration_seconds.toFixed(1)}s of audio across ${result.chunks_analyzed} chunk(s).`}
             />
+
+            {result.prediction === "FAKE" && (
+              <div className="flex justify-center -mt-2">
+                <button
+                  onClick={() => playHindiFraudAlert()}
+                  className="px-5 py-2.5 rounded-2xl bg-red-600/20 hover:bg-red-600 border border-red-500/40 text-red-300 hover:text-white font-bold text-xs flex items-center gap-2 transition-all cursor-pointer active:scale-95 shadow-[0_0_15px_rgba(239,68,68,0.3)]"
+                >
+                  <Volume2 size={16} /> री-प्ले सुरक्षा घोषणा (Play Fraud Voice Alert)
+                </button>
+              </div>
+            )}
+
             <div className="flex justify-center">
               <button 
                 onClick={resetAnalysis}
