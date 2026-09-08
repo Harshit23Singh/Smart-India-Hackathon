@@ -5,6 +5,23 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export interface SuspendedTxn {
+  id: string;
+  amount: string;
+  type: string;
+  time: string;
+  channel: string;
+  status: "PAUSED" | "FROZEN" | "BLOCKED";
+}
+
+export const DEFAULT_SUSPENDED_TXNS: SuspendedTxn[] = [
+  { id: "TXN_98412", amount: "₹2,50,000.00", type: "Urgent RTGS Transfer", channel: "NetBanking", time: "Just now", status: "PAUSED" },
+  { id: "TXN_98411", amount: "₹45,000.00", type: "UPI Instant Collect", channel: "NPCI / UPI", time: "1 min ago", status: "FROZEN" },
+  { id: "TXN_98410", amount: "₹18,500.00", type: "Cardless ATM Request", channel: "ATM Switch", time: "3 mins ago", status: "BLOCKED" },
+  { id: "TXN_98409", amount: "₹12,000.00", type: "Merchant E-Mandate", channel: "Auto-Debit", time: "5 mins ago", status: "PAUSED" },
+];
+
+
 // Emergency banking dual-tone security chime using Web Audio API
 export function playSecurityChime() {
   if (typeof window === "undefined") return;

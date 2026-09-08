@@ -7,6 +7,7 @@ import RecentDetections from "@/components/dashboard/RecentDetections";
 import ThreatChart from "@/components/dashboard/ThreatChart";
 import DetectionResult from "@/components/analysis/DetectionResult";
 import AnalysisPipeline from "@/components/analysis/AnalysisPipeline";
+import TransactionSuspensionBanner from "@/components/analysis/TransactionSuspensionBanner";
 import StarBorder from "@/components/ui/StarBorder";
 import AiSparkIcon from "@/components/ui/AiSparkIcon";
 import { Activity, ShieldAlert, Users, Target, RefreshCw, ShieldCheck, Cpu, Radio, Zap, Volume2 } from "lucide-react";
@@ -235,14 +236,7 @@ export default function Dashboard() {
             />
 
             {result.prediction === "FAKE" && (
-              <div className="flex justify-center -mt-2">
-                <button
-                  onClick={() => playHindiFraudAlert()}
-                  className="px-5 py-2.5 rounded-2xl bg-red-600/20 hover:bg-red-600 border border-red-500/40 text-red-300 hover:text-white font-bold text-xs flex items-center gap-2 transition-all cursor-pointer active:scale-95 shadow-[0_0_15px_rgba(239,68,68,0.3)]"
-                >
-                  <Volume2 size={16} /> री-प्ले सुरक्षा घोषणा (Play Fraud Voice Alert)
-                </button>
-              </div>
+              <TransactionSuspensionBanner confidence={result.confidence} />
             )}
 
             <div className="flex justify-center">

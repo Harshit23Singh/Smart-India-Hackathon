@@ -6,8 +6,10 @@ import DetectionResult from "@/components/analysis/DetectionResult";
 import ExplainableAI from "@/components/analysis/ExplainableAI";
 import SpeakerVerification from "@/components/analysis/SpeakerVerification";
 import ThreatMeter from "@/components/analysis/ThreatMeter";
+import TransactionSuspensionBanner from "@/components/analysis/TransactionSuspensionBanner";
 import StarBorder from "@/components/ui/StarBorder";
 import { Mic, Square, Play, ShieldAlert, Sparkles, AlertTriangle, RefreshCw, Radio, CheckCircle, ShieldCheck } from "lucide-react";
+import { playHindiFraudAlert, stopVoiceAlert } from "@/lib/utils";
 
 interface ApiResult {
   prediction: "REAL" | "FAKE" | string;
@@ -210,6 +212,9 @@ export default function LiveDetectionPage() {
       const data: ApiResult = await response.json();
       setResult(data);
       setStreamState("result");
+      if (data.prediction === "FAKE") {
+        playHindiFraudAlert();
+      }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Failed to analyze live stream audio.";
       console.error("Analysis failure:", err);
@@ -219,6 +224,7 @@ export default function LiveDetectionPage() {
   };
 
   const resetLiveStream = () => {
+    stopVoiceAlert();
     stopAudioContext();
     if (streamRef.current) {
       streamRef.current.getTracks().forEach((track) => track.stop());
@@ -452,6 +458,11 @@ export default function LiveDetectionPage() {
                   />
                 </div>
                 
+                {/* Transaction Suspension Banner */}
+                {isThreat && (
+                  <TransactionSuspensionBanner confidence={result.confidence} />
+                )}
+
                 {/* Prevention / Response Panel for Threat */}
                 {isThreat && (
                   <StarBorder
